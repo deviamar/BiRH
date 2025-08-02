@@ -3,7 +3,7 @@
 ## Core Design Philosophy
 My first prototype focused on achieving **force closure** with a simple geometric structure.
 
-![Initial test](visuals/img/Initial_Test.png)
+![Initial test](visuals/images/Initial_Test.png)
 
 ## Key Design Decisions
 
