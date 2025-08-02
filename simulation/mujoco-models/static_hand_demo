@@ -1,0 +1,94 @@
+<!-- MuJoCo Code for a static hand model with 3 fingers, each with 3 phalanges, all connected with hinge joints. This was designed for visual purposes only and used in a presentation. -->
+
+<mujoco model="equilateral_base_hinge_joint_hand">
+  <option timestep="0.005" iterations="50" solver="Newton" tolerance="1e-10"/>
+
+  <visual>
+    <rgba haze=".3 .3 .3 1"/>
+  </visual>
+
+  <default>
+    <joint type="hinge" pos="0 0 0" axis="0 0 1" limited="true" range="0 120" damping="0.1"/>
+    <muscle ctrllimited="true" ctrlrange="0 1"/>
+  </default>
+
+  <asset>
+    <texture type="skybox" builtin="gradient" rgb1="0.6 0.6 0.6" rgb2="0 0 0" width="512" height="512"/>
+
+    <texture name="texplane" type="2d" builtin="checker" rgb1=".25 .25 .25" rgb2=".3 .3 .3" width="512" height="512" mark="cross" markrgb=".8 .8 .8"/>
+
+    <material name="matplane" reflectance="0.3" texture="texplane" texrepeat="1 1" texuniform="true"/>
+  </asset>
+
+  <worldbody>
+    <geom name="floor" pos="0 0 0" size="0 0 1" type="plane" material="matplane"/>
+
+    <light directional="true" diffuse=".8 .8 .8" specular=".2 .2 .2" pos="0 0 5" dir="0 0 -1"/>
+
+    <site name="1s0" pos="0 0 4.65" size="0.02"/>
+    <site name="1x0" pos="0 -0.9375 5.15" size="0.02" rgba="0 .7 0 1" group="1"/>
+    
+    <body pos="0 0 0">
+      <!-- Define the arm where the hand is attached to -->
+      <geom name="upper arm" type="capsule" size="0.625" fromto="0 0 0  0 0 4" rgba=".7 .7 .7 1"/>
+      
+
+        <body pos="0 0 4">
+          <geom name="palm" type="cylinder" pos="0 0 0" size="1.15 0.625" rgba=".7 .7 .7 1" euler="90 0 0" mass="0" group="1"/>
+        </body>
+
+
+        <body pos="0 0 5.15">
+          <geom name="proximal_phalanx_1" type="capsule" size="0.625" fromto="0 0 0  0 0 1.875" rgba=".7 .7 .7 1"/>
+          <joint name="metacarpophalangeal_joint_1"/>
+          <geom name="metacarpophalangeal_joint_1" type="cylinder" pos="0 0 0" size="0.9375 .7" rgba=".5 .1 .8 .5" mass="0" group="1" euler="0 90 0"/>
+        </body>
+
+        <body pos="0 0 7.025">
+          <geom name="intermediate_phalanx_1" type="capsule" size="0.5" fromto="0 0 0  0 0 1.125" rgba=".7 .7 .7 1"/>
+          <joint name="proximal_interphalangeal_joint_1"/>
+          <geom name="proximal_interphalangeal_joint_1" type="cylinder" pos="0 0 0" size="0.75 .56" rgba=".5 .1 .8 .5" mass="0" group="1" euler="0 90 0"/>
+        </body>
+
+        <body pos="0 0 8.15">
+          <geom name="distal_phalanx_1" type="capsule" size="0.4375" fromto="0 0 0  0 0 0.875" rgba=".7 .7 .7 1"/>
+          <joint name="distal_interphalangeal_joint_1"/>
+          <geom name="distal_interphalangeal_joint_1" type="cylinder" pos="0 0 0" size="0.66 .5" rgba=".5 .1 .8 .5" mass="0" group="1" euler="0 90 0"/>
+        </body>
+
+
+        <site name="1s1" pos="0 0.635 5.65" size="0.02"/>
+        <site name="1s2" pos="0 -0.635 5.65" size="0.02"/>
+        <site name="1s3" pos="0 0.635 6.525" size="0.02"/>
+        <site name="1s4" pos="0 -0.635 6.525" size="0.02"/>
+        
+
+
+        <body pos="1 0 3.42">
+          <geom name="proximal_phalanx_2" type="capsule" size="0.625" fromto="0 0 0  1.624 0 -0.9375" rgba=".7 .7 .7 1" euler="90 0 0"/>
+        </body>
+
+        <body pos="2.624 0 2.4825">
+          <geom name="intermediate_phalanx_2" type="capsule" size="0.5" fromto="0 0 0  0.866 0 -0.5625" rgba=".7 .7 .7 1" euler="0 0 120"/>
+        </body>
+
+        <body pos="3.49 0 1.92">
+          <geom name="distal_phalanx_2" type="capsule" size="0.4375" fromto="0 0 0  0.757 0 -0.4375" rgba=".7 .7 .7 1" euler="90 0 0"/>
+        </body>
+
+
+        <body pos="-1 0 3.42">
+          <geom name="proximal_phalanx_3" type="capsule" size="0.625" fromto="0 0 0  -1.624 0 -0.9375" rgba=".7 .7 .7 1" euler="90 0 0"/>
+        </body>
+
+        <body pos="-2.624 0 2.4825">
+          <geom name="intermediate_phalanx_3" type="capsule" size="0.5" fromto="0 0 0  -0.866 0 -0.5625" rgba=".7 .7 .7 1" euler="0 0 120"/>
+        </body>
+
+        <body pos="-3.49 0 1.92">
+          <geom name="distal_phalanx_3" type="capsule" size="0.4375" fromto="0 0 0  -0.757 0 -0.4375" rgba=".7 .7 .7 1" euler="90 0 0"/>
+        </body>
+
+    </body>
+  </worldbody>
+</mujoco>
