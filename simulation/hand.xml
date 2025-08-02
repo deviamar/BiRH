@@ -1,0 +1,111 @@
+<mujoco model="hand">
+  <compiler angle="degree" coordinate="local"/>
+  <option gravity="0 0 -9.81" integrator="RK4"/>
+
+  <asset>
+    <texture name="grid" type="2d" builtin="checker" rgb1=".1 .2 .3" rgb2=".2 .3 .4" width="300" height="300"/>
+    <material name="grid" texture="grid" texrepeat="8 8" reflectance=".2"/>
+  </asset>
+
+  <worldbody>
+    <geom size="10 10 .02" type="plane" material="grid" pos="0 0 0"/>
+    <light pos="0 0 5"/>
+    <camera name="camera" pos="0 -5 7" xyaxes="1 0 0 0 2 2"/>
+
+    <!--  Forearm -->
+    <body name="forearm" pos="0 0 0">
+      <geom name="forearm" type="cylinder" pos="0 0 1" size="0.35 1"/>
+
+        <!--  Hand  -->
+        <body name="hand" pos="0 0 2">
+          <joint name="wrist" type="hinge" damping="100" axis="1 0 0"/>
+          <geom name="palm" type="cylinder" pos="0 0 0" size="1 0.25"/>
+          <site name="finger1_str_base" pos="0 0.9 0.25" size="0.02" rgba="1 0 0 1"/>
+          <site name="finger2_str_base" pos="-0.70 0.70 0.25" size="0.02" rgba="1 0 0 1"/>
+          <site name="finger1_spr_base" pos="0 0.9 -0.25" size="0.02" rgba="1 0 0 1"/>
+          <site name="finger2_spr_base" pos="-0.70 0.70 -0.25" size="0.02" rgba="1 0 0 1"/>
+
+          <!--  Finger 1  -->
+          <body name="finger1_pp" pos="0 1 0">
+            <joint name="mpj1" type="hinge" axis="1 0 0" damping="10" range="0 90"/>
+            <geom name="pp1" type="capsule" fromto="0 0 0 0 1.5 0" size="0.25"/>
+            <site name="finger1_str_route1" pos="0 0.75 0.25" size="0.02" rgba="1 0 0 1"/>
+            <site name="finger1_spr_route1" pos="0 0.75 -0.25" size="0.02" rgba="1 0 0 1"/>
+              <body name="finger1_mp" pos="0 1.5 0">
+                <joint name="pipj1" type="hinge" axis="1 0 0" damping="10" range="0 90"/>
+                <geom name="mp1" type="capsule" fromto="0 0 0 0 1 0" size="0.25"/>
+                <site name="finger1_str_tip" pos="0 1 0.25" size="0.02" rgba="0 1 0 1"/>
+                <site name="finger1_spr_tip" pos="0 1 -0.25" size="0.02" rgba="0 1 0 1"/>
+              </body>
+          </body>
+
+          <!--  Finger 2  -->
+          <body name="finger2_pp" pos="-0.707 0.707 0">
+            <joint name="mpj2" type="hinge" axis="0.866 0.5 0" damping="10" range="0 90"/>
+            <geom name="pp2" type="capsule" fromto="0 0 0 -1.06 1.06 0" size="0.25"/>
+            <site name="finger2_str_route1" pos="-1 1 0.25" size="0.02" rgba="1 0 0 1"/>
+            <site name="finger2_spr_route1" pos="-1 1 -0.25" size="0.02" rgba="1 0 0 1"/>
+              <body name="finger2_mp" pos="-1.06 1.06 0">
+                <joint name="pipj2" type="hinge" axis="0.866 0.5 0" damping="10" range="0 90"/>
+                <geom name="mp2" type="capsule" fromto="0 0 0 -0.707 0.707 0" size="0.25"/>
+                <site name="finger2_str_tip" pos="-0.70 0.70 0.25" size="0.02" rgba="0 1 0 1"/>
+                <site name="finger2_spr_tip" pos="-0.70 0.70 -0.25" size="0.02" rgba="0 1 0 1"/>
+              </body>
+          </body>
+
+          <!--  Thumb  -->
+          <body name="thumb_mc" pos="0 0 0">
+            <joint name="cmcjt" type="hinge" axis="0 0 1" damping="10" range="0 45"/> <!--The range should be -90 -45-->
+            <geom name="mct" type="capsule" fromto="0 0 0 0.707 -0.707 0" size="0.15"/>
+                <body name="thumb_pp" pos="0.707 -0.707 0">
+                  <joint name="mpjt" type="hinge" axis="0.866 0.5 0" damping="5" range="-90 0"/>
+                  <joint name="abd/add" type="hinge" axis="1 0 0" range="-30 30" damping="5"/>
+                  <geom name="ppt" type="capsule" fromto="0 0 0 0.707 -0.707 0" size="0.25"/>
+                </body>
+          </body>
+        </body>
+    </body>
+  </worldbody>
+
+  <!-- Tendons for active flexion -->
+  <tendon>
+    <spatial limited="true" range="0 0.6" width="0.005" name="flexor_finger1">
+      <site site="finger1_str_base"/>
+      <site site="finger1_str_route1"/>
+      <site site="finger1_str_tip"/>
+    </spatial>
+  </tendon>
+
+  <tendon>
+    <spatial limited="true" range="0 0.6" width="0.005" name="flexor_finger2">
+      <site site="finger2_str_base"/>
+      <site site="finger2_str_route1"/>
+      <site site="finger2_str_tip"/>
+    </spatial>
+  </tendon>
+
+  <actuator>
+    <motor name="motor_finger1" tendon="flexor_finger1" gear="1"/>
+  </actuator>
+
+  <actuator>
+    <motor name="motor_finger2" tendon="flexor_finger2" gear="1"/>
+  </actuator>
+
+  <!-- Springs for passive extension -->
+  <tendon>
+    <spatial limited="true" range="0 0.6" springlength="0.55" stiffness="5" damping="5" width="0.05" name="extendor_finger1">
+      <site site="finger1_spr_base"/>
+      <site site="finger1_spr_route1"/>
+      <site site="finger1_spr_tip"/>
+    </spatial>
+
+    <spatial limited="true" range="0 0.6" springlength="0.55" stiffness="5" damping="5" width="0.05" name="extendor_finger2">
+      <site site="finger2_spr_base"/>
+      <site site="finger2_spr_route1"/>
+      <site site="finger2_spr_tip"/>
+    </spatial>
+  </tendon>
+
+
+</mujoco>
