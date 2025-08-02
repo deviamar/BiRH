@@ -3,7 +3,7 @@
 While exploring ways to evaluate and refine robotic hand designs, I discovered the *Anthropomorphic Hand Assessment Protocol* (AHAP) (Llop-Harillo et al., 2019), which proposes a standardized framework for evaluating robotic hands using common grasp types from activities of daily living (ADLs). This aligned perfectly with my goal of systematically improving prototypes through understanding essential grasp configurations.
 
 **Adapted Testing Methodology:**
-To test my design ideas using these principles, I developed a low-cost validation approach: using constrained motions of my own hand to simulate different robotic configurations while attempting AHAP-defined grasps with simple objects (wire, paper, tape).
+To test my design ideas using these principles, I developed a low-cost validation approach by using constrained motions of my own hand to simulate different robotic configurations while attempting AHAP-defined grasps with simple objects (wire, paper, tape).
 
 **Configuration Testing:**
 - **Prototype 1**: Three fingers, three phalanges, all hinge joints
@@ -31,7 +31,7 @@ See images and detailed notes here: [Test Results](Test.pdf)
 - **Missing abduction/adduction** eliminates entire grasp categories (lateral pinch, diagonal volar grip)
 
 **Impact on Next Prototype:**
-These insights directly informed my second design iteration, prioritizing thumb positioning to enable two categories of opposition-based grasps.
+Based on these results, I decided to develop a second prototype where I have two fingers opposing a thumb. Each finger has three phalanges and the thumb is capable of opposing in two directions. Toward the fingertips for cylindrical and tripod pinch grasps, and toward the side of the first finger to enable a diagonal volar grip.
 
 ## References
 
