@@ -1,0 +1,37 @@
+BiRH/
+├── README.md                          # Main project overview
+├── LICENSE                            # Open source license
+│
+├── design/                            # CAD files
+│   ├── README.md                      # Design overview and iteration timeline
+│   ├── v1-initial-concept/
+│   │   ├── CAD/                       # CAD files (.step, .stl)
+│   │   └── design-notes.md            # Design decisions and rationale
+│   └── v2-refined-design/
+│       ├── CAD/
+│       ├── improvements.md            # What changed and why
+│
+├── simulation/                        # MuJoCo simulations
+│   ├── README.md                      # Simulation overview and usage
+│   ├── models/                        # MuJoCo XML files
+│   │   ├── hand-v1.xml
+│   └── scripts/                       # Python simulation scripts
+│       ├── basic-grasp.py
+│       ├── dexterity-test.py
+│       └── analysis-tools.py
+│
+├── research/                          # Research and inspiration
+│   ├── README.md                      # Research overview
+│   ├── literature-review.md           # Key papers and findings
+│   └── bio-inspiration/               # Human hand analysis
+│       ├── anatomy-notes.md
+│
+└── media/                             # Visual content
+    ├── README.md                      # Media index and credits
+    ├── images/                        # Project photos and diagrams
+    │   ├── hero-shots/                # Main project images
+    │   ├── process-photos/            # Build and test photos
+    │   └── diagrams/                  # Technical illustrations
+    ├── videos/                        # Demonstration videos
+    └── presentations/                 # Slideshows and talks
+        ├── BiRH_RSLS.pdf
