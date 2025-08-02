@@ -1,3 +1,5 @@
+<!-- BiRH Prototype 2 Hand Model with Tendons (Spring, string) and Actuators -->
+
 <mujoco model="hand">
   <compiler angle="degree" coordinate="local"/>
   <option gravity="0 0 -9.81" integrator="RK4"/>
