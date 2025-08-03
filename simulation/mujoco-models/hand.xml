@@ -7,12 +7,13 @@
   <asset>
     <texture name="grid" type="2d" builtin="checker" rgb1=".1 .2 .3" rgb2=".2 .3 .4" width="300" height="300"/>
     <material name="grid" texture="grid" texrepeat="8 8" reflectance=".2"/>
+    <mesh name="apple_mesh" file="/Users/stellaluna/apple.stl"/>
   </asset>
 
   <worldbody>
     <geom size="10 10 .02" type="plane" material="grid" pos="0 0 0"/>
     <light pos="0 0 5"/>
-    <camera name="camera" pos="0 -10 20" xyaxes="1 0 0 0 2 2"/>
+    <camera name="camera" pos="0 -1 2" xyaxes="1 0 0 0 2 2"/>
 
     <!--  Forearm -->
     <body name="forearm" pos="0 0 0">
@@ -57,6 +58,12 @@
           
         </body>
     </body>
+
+    <body name="apple" pos="0 0 3">
+      <freejoint/>
+      <geom name="apple_geom" type="mesh" mesh="apple_mesh" mass="0.2"/>
+    </body>
+
   </worldbody>
 
   <actuator>
