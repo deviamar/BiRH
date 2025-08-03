@@ -1,10 +1,10 @@
-import mujoco
+import mujoco # type: ignore
 import numpy as np
-from mujoco import viewer
+from mujoco import viewer # type: ignore
 import time
 
 # Load model and data
-model = mujoco.MjModel.from_xml_path("hand.xml")
+model = mujoco.MjModel.from_xml_path("/Users/stellaluna/Documents/GitHub/BiRH/simulation/mujoco-models/hand.xml")
 data = mujoco.MjData(model)
 
 # Map actuator names to IDs
@@ -14,25 +14,15 @@ actuator_ids = {
     "mpjt_motor": mujoco.mj_name2id(model, mujoco.mjtObj.mjOBJ_ACTUATOR, "mpjt_motor"),
 }
 
-# Control the target angle in degrees
-targets = {
-    "mpj1_motor": np.linspace(0, 90, 10),
-    "mpj2_motor": np.linspace(0, 90, 10),
-    "mpjt_motor": np.linspace(-90, 0, 10),  # thumb goes -90 to 0
-}
+# Set target angles
+data.ctrl[actuator_ids["mpj1_motor"]] = 45
+data.ctrl[actuator_ids["mpj2_motor"]] = 30
+data.ctrl[actuator_ids["mpjt_motor"]] = -90
 
-# Launch interactive viewer
+# Launch viewer and run simulation
 with viewer.launch_passive(model, data) as v:
-    for name in ["mpj1_motor", "mpj2_motor", "mpjt_motor"]:
-        idx = actuator_ids[name]
-        for val_rad in targets[name]:
-            
-            data.ctrl[idx] = val_rad
-            
-            for _ in range(20):  # simulate a few steps for smoother motion
-                mujoco.mj_step(model, data)
-                v.sync()
-                time.sleep(0.2)
-
-    time.sleep(1)
-                
+    for _ in range(20):  # Run for a while to see the result
+        mujoco.mj_step(model, data)
+        v.sync()
+        time.sleep(0.1)
+    time.sleep(10)
