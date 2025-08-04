@@ -12,3 +12,4 @@ In this repository, you'll find:
  - A slideshow and written reflections on my design journey
 
 This is a work-in-progress archive and portfolio of everything I’ve learned and continue to build along the way.
+![MuJoCo Simulation Environment](BiRH/visuals/images/mujoco_arm.png)
