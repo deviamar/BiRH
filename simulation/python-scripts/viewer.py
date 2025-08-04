@@ -1,8 +1,9 @@
+# Code to simply view the scene.xml file
 import mujoco #type: ignore
 from mujoco import viewer #type: ignore
 
 # Load the scene
-model = mujoco.MjModel.from_xml_path("/Users/stellaluna/Documents/GitHub/BiRH/simulation/mujoco-models/hand_ur10e.xml")
+model = mujoco.MjModel.from_xml_path("/Users/stellaluna/Documents/GitHub/BiRH/simulation/mujoco-models/scene.xml")
 data = mujoco.MjData(model)
 
 # Launch viewer - this is the easiest and fastest way
