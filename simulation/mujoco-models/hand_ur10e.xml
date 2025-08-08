@@ -3,7 +3,7 @@
 <mujoco model="hand_ur10e">
   <compiler coordinate="local" angle="radian" meshdir="assets" autolimits="true"/>
   <option gravity="0 0 -9.81" integrator="RK4" timestep="0.0001">
-    <!--<flag contact="enable" energy="enable"/>-->
+    <flag contact="enable" energy="enable"/>
   </option>
 
   <default>
@@ -74,30 +74,9 @@
     <mesh file="wrist2_1.obj"/>
     <mesh file="wrist2_2.obj"/>
     <mesh file="wrist3.obj"/>
-
-    <!-- Mesh of all the objects taken from http://ycb-benchmarks.s3-website-us-east-1.amazonaws.com/ -->
-    <mesh name="apple_mesh" file="apple.stl" scale="2 2 2"/>
-    <mesh name="tuna_can_mesh" file="tuna_can.stl" scale="2 2 2"/>
-    <mesh name="softball_mesh" file="softball.stl" scale="2 2 2"/>
-    <mesh name="s_marker_mesh" file="s_marker.stl" scale="2 2 2"/>
-    <mesh name="spatula_mesh" file="spatula.stl"/>
-    <mesh name="chips_can_mesh" file="chips_can.stl" scale="2 2 2"/>
-    <mesh name="cracker_box_mesh" file="cracker_box.stl" scale="2 2 2"/>
-    <mesh name="pudding_mesh" file="pudding.stl" scale="2 2 2"/>
-    <mesh name="pear_mesh" file="pear.stl" scale="2 2 2"/>
-    <mesh name="pitcher_mesh" file="pitcher.stl" scale="2 2 2"/>
-    <mesh name="bowl_mesh" file="bowl.stl" scale="2 2 2"/>
-    <mesh name="skillet_mesh" file="skillet.stl" scale="0.5 0.5 0.5"/>
-    <mesh name="plate_mesh" file="plate.stl" scale="0.5 0.5 0.5"/>
-    <mesh name="power_drill_mesh" file="power_drill.stl" scale="2 2 2"/>
-    <mesh name="keys_mesh" file="keys.stl" scale="0.5 0.5 0.5"/>
-    <mesh name="l_marker_mesh" file="l_marker.stl" scale="2 2 2"/>
-    <mesh name="screwdriver_mesh" file="screwdriver.stl" scale="2 2 2"/>
-    <mesh name="s_clamp_mesh" file="s_clamp.stl" scale="2 2 2"/>
-    <mesh name="soccer_ball_mesh" file="soccer_ball.stl" scale="2 2 2"/>
-    <mesh name="golf_ball_mesh" file="golf_ball.stl" scale="2 2 2"/>
-    <mesh name="cup_mesh" file="cup.stl" scale="2 2 2"/>
     
+    <!-- Mesh of all the objects taken from http://ycb-benchmarks.s3-website-us-east-1.amazonaws.com/ -->
+    <mesh name="apple_mesh" file="apple.stl" scale="1 1 1"/>
 
   </asset>
 
@@ -157,20 +136,27 @@
                   <geom material="linkgray" mesh="wrist3" class="visual"/>
                   <geom class="eef_collision" pos="0 0.097 0" quat="1 1 0 0" size="0.046 0.02"/>
                   <site name="attachment_site" pos="0 0.1 0" quat="-1 1 0 0"/>
-                    <!--  Hand  -->
+                  <!--  Hand  -->
                   <body name="hand" pos="0 0.12 0" quat="0.707 -0.707 0 0">
                     <!--<joint name="wrist" type="hinge" damping="100" axis="1 0 0"/>-->
                     <geom name="palm" type="cylinder" pos="0 0 0" size="0.05 0.0125"/>
+                    <geom name="palm_pad" type="cylinder" pos="0 0 0.013" size="0.05 0.001"
+                          margin="0.003" solref="0.0005 1.6" solimp="0.99 0.999 0.0003 0.5 2"
+                          friction="1.2 0.01 0.0005" rgba="0.2 0.2 0.2 0.8" mass="0.005"/>
 
                     <!--  Finger 1  -->
                     <body name="finger1_pp" pos="0 .05 0">
                       <joint name="mpj1" type="hinge" axis="1 0 0" damping="5" range="0 1.571"/>
                       <geom name="pp1" type="capsule" fromto="0 0 0 0 .075 0" size="0.0125" mass=".1"/>
+                      <geom name="pp1_pad" type="box" pos="0 0.0375 0.013" size="0.0125 0.0375 0.001"
+                            margin="0.003" solref="0.0005 1.6" solimp="0.99 0.999 0.0003 0.5 2"
+                            friction="1.2 0.01 0.0005" rgba="0.2 0.2 0.2 0.8" mass="0.005"/>
                         <body name="finger1_mp" pos="0 .075 0">
                           <joint name="pipj1" type="hinge" axis="1 0 0" damping="5" range="0 1.571"/>
                           <geom name="mp1" type="capsule" fromto="0 0 0 0 .05 0" size="0.0125" mass=".1"/>
-                            <geom name="finger1_pad" type="box" pos="0 0.04 0" size="0.01 0.0075 0.005" 
-                                  friction="1.5 0.1 0.001" rgba="0.8 0.6 0.4 1"/>
+                            <geom name="mp1_pad" type="box" pos="0 0.025 0.013" size="0.0125 0.025 0.001"
+                              margin="0.003" solref="0.0005 1.6" solimp="0.99 0.999 0.0003 0.5 2"
+                              friction="1.2 0.01 0.0005" rgba="0.2 0.2 0.2 0.8" mass="0.005"/>
                         </body>
                     </body>
 
@@ -178,26 +164,37 @@
                     <body name="finger2_pp" pos="-0.03535 0.03535 0">
                       <joint name="mpj2" type="hinge" axis="1 1 0" damping="5" range="0 1.571"/>
                       <geom name="pp2" type="capsule" fromto="0 0 0 -.053 .053 0" size="0.0125" mass=".1"/>
+                      <geom name="pp2_pad" type="box" pos="-0.025 0.025 0.013" size="0.0125 0.0375 0.001"
+                            margin="0.003" solref="0.0005 1.6" solimp="0.99 0.999 0.0003 0.5 2"
+                            friction="1.2 0.01 0.0005" rgba="0.2 0.2 0.2 0.8" mass="0.005" quat="0.927 0 0 0.375"/>
                         <body name="finger2_mp" pos="-.053 .053 0">
                           <joint name="pipj2" type="hinge" axis="1 1 0" damping="5" range="0 1.571"/>
                           <geom name="mp2" type="capsule" fromto="0 0 0 -0.03535 0.03535 0" size="0.0125" mass=".1"/>
+                            <geom name="mp2_pad" type="box" pos="-0.0155 0.0155 0.013" size="0.0125 0.025 0.001"
+                              margin="0.003" solref="0.0005 1.6" solimp="0.99 0.999 0.0003 0.5 2"
+                              friction="1.2 0.01 0.0005" rgba="0.2 0.2 0.2 0.8" mass="0.005" quat="0.927 0 0 0.375"/>
                         </body>
                     </body>
 
                     <!-- Thumb -->
-                    <body name="thumb_pp" pos="0.03535 -0.03535 0">
-                      <joint name="mpjt" type="hinge" axis="1 1 0" damping="5" range="0 1.571"/>
+                    <body name="fingert_pp" pos="0.03535 -0.03535 0">
+                      <joint name="mpjt" type="hinge" axis="-1 -1 0" damping="5" range="0 1.571"/>
                       <joint name="abd_add" type="hinge" axis="0 0 1" damping="5" range="-0.5237 0.5237"/>
                       <geom name="ppt" type="capsule" fromto="0 0 0 .053 -.053 0" size="0.0125" mass=".1"/>
+                      <geom name="ppt_pad" type="box" pos="0.025 -0.025 0.013" size="0.0125 0.0375 0.001"
+                            margin="0.003" solref="0.0005 1.6" solimp="0.99 0.999 0.0003 0.5 2"
+                            friction="1.2 0.01 0.0005" rgba="0.2 0.2 0.2 0.8" mass="0.005" quat="0.927 0 0 0.375"/>
                         <body name="fingert_mp" pos=".053 -.053 0">
-                          <joint name="pipjt" type="hinge" axis="1 1 0" damping="5" range="-1.571 0"/>
+                          <joint name="pipjt" type="hinge" axis="-1 -1 0" damping="5" range="0 1.571"/>
                           <geom name="mpt" type="capsule" fromto="0 0 0 0.03535 -0.03535 0" size="0.0125" mass=".1"/>
+                          <geom name="mpt_pad" type="box" pos="0.0155 -0.0155 0.013" size="0.0125 0.025 0.001"
+                              margin="0.003" solref="0.0005 1.6" solimp="0.99 0.999 0.0003 0.5 2"
+                              friction="1.2 0.01 0.0005" rgba="0.2 0.2 0.2 0.8" mass="0.005" quat="0.927 0 0 0.375"/>
                         </body>
                     </body>
 
                     
                   </body>
-                        
                 </body>
               </body>
             </body>
@@ -207,111 +204,12 @@
     </body>
 
     <!-- Objects for grasping -->
-    <body name="apple" pos="-1.5 0.5 0">
+    <body name="apple" pos="-0.2 0 2">
       <freejoint/>
-      <geom name="apple_g" type="mesh" mesh="apple_mesh" mass="0.2"/>
+      <geom name="apple_g" type="mesh" mesh="apple_mesh" mass="0.2"
+            solref=".002 1" solimp="0.9 0.95 0.001 0.5 2" friction="1.0 0.01 0.001"/>
+      
     </body>
-
-    <body name="tuna" pos="-1 0.5 0">
-      <freejoint/>
-      <geom name="tuna_g" type="mesh" mesh="tuna_can_mesh" mass="0.2"/>
-    </body>
-
-    <body name="softball" pos="-0.5 0.5 0">
-      <freejoint/>
-      <geom name="softball_g" type="mesh" mesh="softball_mesh" mass="0.2"/>
-    </body>
-
-    <body name="s_marker" pos="0 0.5 0">
-      <freejoint/>
-      <geom name="s_marker_g" type="mesh" mesh="s_marker_mesh" mass="0.2"/>
-    </body>
-
-    <body name="spatula" pos="0.5 0.5 0">
-      <freejoint/>
-      <geom name="spatula_g" type="mesh" mesh="spatula_mesh" mass="0.2"/>
-    </body>
-
-    <body name="chips_can" pos="1 0.5 0">
-      <freejoint/>
-      <geom name="chips_can_g" type="mesh" mesh="chips_can_mesh" mass="0.2"/>
-    </body>
-
-    <body name="cracker_box" pos="1.5 0.5 0">
-      <freejoint/>
-      <geom name="cracker_box_g" type="mesh" mesh="cracker_box_mesh" mass="0.2"/>
-    </body>
-
-    <body name="pudding" pos="2 0.5 0">
-      <freejoint/>
-      <geom name="pudding_g" type="mesh" mesh="pudding_mesh" mass="0.2"/>
-    </body>
-
-    <body name="pear" pos="-1.5 1 0">
-      <freejoint/>
-      <geom name="pear_g" type="mesh" mesh="pear_mesh" mass="0.2"/>
-    </body>
-
-    <body name="pitcher" pos="-1 1 0">
-      <freejoint/>
-      <geom name="pitcher_g" type="mesh" mesh="pitcher_mesh" mass="0.2"/>
-    </body>
-
-    <body name="bowl" pos="-.5 1 0">
-      <freejoint/>
-      <geom name="bowl_g" type="mesh" mesh="bowl_mesh" mass="0.2"/>
-    </body>
-
-    <body name="skillet" pos="0 1 0">
-      <freejoint/>
-      <geom name="skillet_g" type="mesh" mesh="skillet_mesh" mass="0.2"/>
-    </body>
-
-    <body name="plate" pos=".5 1 0">
-      <freejoint/>
-      <geom name="plate_g" type="mesh" mesh="plate_mesh" mass="0.2"/>
-    </body>
-
-    <body name="power_drill" pos="1 1 0">
-      <freejoint/>
-      <geom name="power_drill_g" type="mesh" mesh="power_drill_mesh" mass="0.2"/>
-    </body>
-
-    <body name="keys" pos="1.5 1 0">
-      <freejoint/>
-      <geom name="keys_g" type="mesh" mesh="keys_mesh" mass="0.2"/>
-    </body>
-
-    <body name="l_marker" pos="2 1 0">
-      <freejoint/>
-      <geom name="l_marker_g" type="mesh" mesh="l_marker_mesh" mass="0.2"/>
-    </body>
-
-    <body name="screwdriver" pos="-1.5 1.5 0">
-      <freejoint/>
-      <geom name="screwdriver_g" type="mesh" mesh="screwdriver_mesh" mass="0.2"/>
-    </body>
-
-    <body name="s_clamp" pos="-1 1.5 0">
-      <freejoint/>
-      <geom name="s_clamp_g" type="mesh" mesh="s_clamp_mesh" mass="0.2"/>
-    </body>
-
-    <body name="soccer_ball" pos="-.5 1.5 0">
-      <freejoint/>
-      <geom name="soccer_ball_g" type="mesh" mesh="soccer_ball_mesh" mass="0.2"/>
-    </body>
-
-    <body name="golf_ball" pos="0 1.5 0">
-      <freejoint/>
-      <geom name="golf_ball_g" type="mesh" mesh="golf_ball_mesh" mass="0.2"/>
-    </body>
-
-    <body name="cup" pos=".5 1.5 0">
-      <freejoint/>
-      <geom name="cup_g" type="mesh" mesh="cup_mesh" mass="0.2"/>
-    </body>
-
 
   </worldbody>
 
@@ -329,13 +227,13 @@
     <position name="pipj1_motor" joint="pipj1" kp="100" ctrlrange="0 1.571"/>
     <position name="mpj2_motor" joint="mpj2" kp="200" ctrlrange="0 1.571"/>
     <position name="pipj2_motor" joint="pipj2" kp="100" ctrlrange="0 1.571"/>
-    <position name="mpjt_motor" joint="mpjt" kp="2000" ctrlrange="-1.571 0"/>
-    <position name="abd_add_motor" joint="abd_add" kp="5000" ctrlrange="-1.2 1.2"/>
-    <position name="pipjt_motor" joint="pipjt" kp="1000" ctrlrange="-1.571 0"/>
+    <position name="mpjt_motor" joint="mpjt" kp="200" ctrlrange="0 1.571"/>
+    <position name="abd_add_motor" joint="abd_add" kp="100" ctrlrange="-1.2 1.2"/>
+    <position name="pipjt_motor" joint="pipjt" kp="100" ctrlrange="0 1.571"/>
   </actuator>
 
- <!-- <keyframe>
-    <key name="home" qpos="-1.5708 -1.5708 1.5708 -1.5708 -1.5708 0 0 0 0 0 0 0 0" 
-         ctrl="-1.5708 -1.5708 1.5708 -1.5708 -1.5708 0 0 0 0 0 0 0 0"/>
-  </keyframe>-->
+  <keyframe>
+    <key name="home" qpos="0 -1.63 0 0 1.57 0 0 0 0 0 0 0 0 -0.03 -0.18 1.5 0 0 0 0"
+                     ctrl="0 -1.63 0 0 1.57 0 0 0 0 0 0 0 0"/>
+  </keyframe>
 </mujoco>

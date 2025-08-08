@@ -1,3 +1,5 @@
+# Simple code to control the mp joint motors in each of the three fingers
+
 import mujoco # type: ignore
 import numpy as np
 from mujoco import viewer # type: ignore
