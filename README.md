@@ -11,4 +11,6 @@ In this repository, you'll find:
  - Grasp test photos and insights
  - A slideshow and written reflections on my design journey
 
-This is a work-in-progress archive and portfolio of everything I’ve learned and continue to build along the way.
+This is a work in progress archive and portfolio of everything I’ve learned and continue to build along the way.
+![MuJoCo Simulation Environment](visuals/images/Initial_Test.png)
+![MuJoCo Simulation Environment](visuals/images/mujoco_arm.png)
