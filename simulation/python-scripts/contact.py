@@ -121,10 +121,24 @@ def get_ids(model, obj_geom_name, palm_body_name, pad_geom_names):
     pad_geom_ids = [mujoco.mj_name2id(model, mujoco.mjtObj.mjOBJ_GEOM, n) for n in pad_geom_names]
     return obj_geom_id, obj_body_id, palm_body_id, pad_geom_ids
 
+def in_contact_live(model, data, geom_1, geom_2):
+    id1 = mujoco.mj_name2id(model, mujoco.mjtObj.mjOBJ_GEOM, geom_1)
+    id2 = mujoco.mj_name2id(model, mujoco.mjtObj.mjOBJ_GEOM, geom_2)
+    for i in range(data.ncon):
+        c = data.contact[i]
+        if (c.geom1 == id1 and c.geom2 == id2) or (c.geom1 == id2 and c.geom2 == id1):
+            return True
+    return False
+
 #check if all fingers are done
-def all_fingers_done(fs):
-    for f in fs.values():
+def all_fingers_done(finger_states, contacts):
+    phalanges = {"pp1", "mp1", "pp2", "mp2", "ppt", "mpt", "palm"}
+    for f in finger_states.values():
         if f['current'] < len(f['joints']):
+            pad = f['pads'][f['current']]
+            for ph in phalanges:
+                if in_contact_live(model, data, pad, ph):
+                    f['current'] += 1
             return False
     return True
 
@@ -145,11 +159,19 @@ with viewer.launch_passive(model, data) as v:
         mujoco.mj_step(model, data)
 
         if phase == "closing":
+            all_contacts = get_contact_info(model, data)
+
             # Nudge the fingers inwards toward a grasp
             moving = grasp_step(model, data, obj_geom_name, finger_states, increment=0.005)
             time.sleep(0.01)
+            
             # Option A: declare done when all fingers advanced through their joints
-            if all_fingers_done(finger_states):
+            if all_fingers_done(finger_states, all_contacts):
                 phase = "monitor_ready"
-        
+                print("Grasp complete!")
+            
+            """ print("Number of contacts: ", data.ncon)
+            for contact in all_contacts:
+                print(f"  {contact['geom1_name']} <-> {contact['geom2_name']}")
+                print() """
         v.sync()
