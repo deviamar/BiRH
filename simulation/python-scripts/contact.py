@@ -1,4 +1,5 @@
-# Code to detect contact and test grasp stability
+# Code to test grasp stability
+
 import mujoco #type: ignore
 from mujoco import viewer #type: ignore
 import numpy as np
@@ -8,7 +9,7 @@ import math
 model = mujoco.MjModel.from_xml_path("/Users/stellaluna/Documents/GitHub/BiRH/simulation/mujoco-models/scene.xml")
 data = mujoco.MjData(model)
 
-# method to bring arm and hand to initial position
+# Bring arm and hand to initial position
 def reset_pos():
     home_keyframe_id = mujoco.mj_name2id(model, mujoco.mjtObj.mjOBJ_KEY, "home")
     if home_keyframe_id >= 0:
@@ -16,20 +17,21 @@ def reset_pos():
 
 reset_pos()
 
-# given the array of contacts, check if two geoms are in contact
-def in_contact(model, contacts, geom_1, geom_2):
+# Given the array of contacts, check if two geoms are in contact
+def in_contact(model, data, geom_1, geom_2):
     geom_1_id = mujoco.mj_name2id(model, mujoco.mjtObj.mjOBJ_GEOM, geom_1)
     geom_2_id = mujoco.mj_name2id(model, mujoco.mjtObj.mjOBJ_GEOM, geom_2)
 
-    for contact in contacts:
+    for i in range(data.ncon):
+        c = data.contact[i]
         # Check both possible orderings of the geom pair
-        if (contact.geom1 == geom_1_id and contact.geom2 == geom_2_id) or \
-           (contact.geom1 == geom_2_id and contact.geom2 == geom_1_id):
+        if (c.geom1 == geom_1_id and c.geom2 == geom_2_id) or \
+           (c.geom1 == geom_2_id and c.geom2 == geom_1_id):
             return True
     
     return False
 
-# get in-depth info on all contacts
+# Get in-depth info on all contacts
 def get_contact_info(model, data):
     contacts = []
     
@@ -67,12 +69,13 @@ def grasp_step(model, data, obj_name, finger_states, increment=0.005):
 
         joint_name = finger['joints'][finger['current']]
         pad_name   = finger['pads'][finger['current']]
+        actuator_name = finger['actuators'][finger['current']]
 
         joint_id = mujoco.mj_name2id(model, mujoco.mjtObj.mjOBJ_JOINT, joint_name)
         pad_id   = mujoco.mj_name2id(model, mujoco.mjtObj.mjOBJ_GEOM,  pad_name)
+        act_id   = mujoco.mj_name2id(model, mujoco.mjtObj.mjOBJ_ACTUATOR,  actuator_name)
         qadr     = model.jnt_qposadr[joint_id]
-        act_id   = _actuator_for_joint(model, joint_id)
-
+        
         # Initialize per-joint state
         if 'start_pos' not in finger:
             finger['start_pos'] = float(data.qpos[qadr])
@@ -92,67 +95,36 @@ def grasp_step(model, data, obj_name, finger_states, increment=0.005):
             data.qpos[qadr] = target
             mujoco.mj_forward(model, data)
 
-        # Contact check
-        contact_detected = False
-        for i in range(data.ncon):
-            c = data.contact[i]
-            if (c.geom1 == pad_id and c.geom2 == obj_id) or (c.geom1 == obj_id and c.geom2 == pad_id):
-                contact_detected = True
-                break
-
-        if contact_detected:
+        if in_contact(model, data, pad_name, obj_name):
             finger['current'] += 1
             finger.pop('start_pos', None)
             finger['steps'] = 0
             print(f"{finger_name} contact detected, advancing to next joint")
 
     return any_moving
-    
-def _actuator_for_joint(model, joint_id):
-    for a in range(model.nu):
-        if model.actuator_trnid[a][0] == joint_id:
-            return a
-    return -1
-
-def get_ids(model, obj_geom_name, palm_body_name, pad_geom_names):
-    obj_geom_id  = mujoco.mj_name2id(model, mujoco.mjtObj.mjOBJ_GEOM, obj_geom_name)
-    obj_body_id  = model.geom_bodyid[obj_geom_id]
-    palm_body_id = mujoco.mj_name2id(model, mujoco.mjtObj.mjOBJ_BODY, palm_body_name)
-    pad_geom_ids = [mujoco.mj_name2id(model, mujoco.mjtObj.mjOBJ_GEOM, n) for n in pad_geom_names]
-    return obj_geom_id, obj_body_id, palm_body_id, pad_geom_ids
-
-def in_contact_live(model, data, geom_1, geom_2):
-    id1 = mujoco.mj_name2id(model, mujoco.mjtObj.mjOBJ_GEOM, geom_1)
-    id2 = mujoco.mj_name2id(model, mujoco.mjtObj.mjOBJ_GEOM, geom_2)
-    for i in range(data.ncon):
-        c = data.contact[i]
-        if (c.geom1 == id1 and c.geom2 == id2) or (c.geom1 == id2 and c.geom2 == id1):
-            return True
-    return False
 
 #check if all fingers are done
 def all_fingers_done(finger_states, contacts):
-    phalanges = {"pp1", "mp1", "pp2", "mp2", "ppt", "mpt", "palm"}
+    phalanges = {"pp1", "mp1", "pp2", "mp2", "pp3", "mp3", "palm"}
     for f in finger_states.values():
         if f['current'] < len(f['joints']):
             pad = f['pads'][f['current']]
             for ph in phalanges:
-                if in_contact_live(model, data, pad, ph):
+                if in_contact(model, data, pad, ph):
                     f['current'] += 1
             return False
     return True
 
 # Initialize finger states
 finger_states = {
-    'finger1': {'joints': ['mpj1', 'pipj1'], 'pads': ['pp1_pad', 'mp1_pad'], 'current': 0},
-    'finger2': {'joints': ['mpj2', 'pipj2'], 'pads': ['pp2_pad', 'mp2_pad'], 'current': 0},
-    'thumb': {'joints': ['mpjt', 'pipjt'], 'pads': ['ppt_pad', 'mpt_pad'], 'current': 0}
+    'finger1': {'joints': ['mpj1', 'pipj1'], 'pads': ['pp1_pad', 'mp1_pad'], 'actuators': ['mpj1_motor', 'pipj1_motor'], 'current': 0},
+    'finger2': {'joints': ['mpj2', 'pipj2'], 'pads': ['pp2_pad', 'mp2_pad'], 'actuators': ['mpj2_motor', 'pipj2_motor'], 'current': 0},
+    'finger3': {'joints': ['mpj3', 'pipj3'], 'pads': ['pp3_pad', 'mp3_pad'], 'actuators': ['mpj3_motor', 'pipj3_motor'], 'current': 0}
 }
 
 phase = "closing"         # "closing" -> "monitor_ready" -> "testing" -> "done"
 obj_geom_name = "apple_g"
 
-# Launch viewer - this is the easiest and fastest way
 with viewer.launch_passive(model, data) as v:
     while v.is_running():
         # 1) advance physics
@@ -170,8 +142,5 @@ with viewer.launch_passive(model, data) as v:
                 phase = "monitor_ready"
                 print("Grasp complete!")
             
-            """ print("Number of contacts: ", data.ncon)
-            for contact in all_contacts:
-                print(f"  {contact['geom1_name']} <-> {contact['geom2_name']}")
-                print() """
+            
         v.sync()
