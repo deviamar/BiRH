@@ -2,7 +2,7 @@
 
 <mujoco model="hand_ur10e">
   <compiler coordinate="local" angle="radian" meshdir="assets" autolimits="true"/>
-  <option gravity="0 0 -9.81" integrator="RK4" timestep="0.001">
+  <option gravity="0 0 -9.81" integrator="RK4" timestep="0.0001">
     <flag contact="enable" energy="enable"/>
   </option>
 
@@ -42,6 +42,7 @@
     
     <!-- Hand-specific defaults -->
     <default class="hand">
+      <general biastype="affine" ctrlrange="0 1.571" gainprm=""/>
       <joint damping="5"/>
       <geom friction="1.0 0.1 0.001"/>
     </default>
@@ -76,6 +77,7 @@
     <mesh file="wrist3.obj"/>
     
     <!-- Mesh of all the objects taken from http://ycb-benchmarks.s3-website-us-east-1.amazonaws.com/ -->
+    <!--<mesh name="apple_mesh" file="apple.stl" scale="1 1 1"/>-->
     <mesh name="apple_mesh" file="apple.stl" scale="1 1 1"/>
 
   </asset>
@@ -141,54 +143,54 @@
                     <!--<joint name="wrist" type="hinge" damping="100" axis="1 0 0"/>-->
                     <geom name="palm" type="cylinder" pos="0 0 0" size="0.05 0.0125"/>
                     <geom name="palm_pad" type="cylinder" pos="0 0 0.013" size="0.05 0.001"
-                          margin="0.003" solref="0.0005 1.6" solimp="0.99 0.999 0.0003 0.5 2"
-                          friction="1.2 0.01 0.0005" rgba="0.2 0.2 0.2 0.8" mass="0.005"/>
+                          margin="0.003" solref="0.01 1" solimp="0.9 0.95 0.001 0.5 2"
+                          friction="1 0.05 0.001" rgba="0.2 0.2 0.2 0.8" mass="0.005"/>
                     
                     <!--  Finger 1  -->
-                    <body name="finger1_pp" pos="0.050 0 0">
+                    <body name="finger1_pp" pos="0.050 0 0" quat="1 0 0 0">
                       <joint name="mpj1" type="hinge" axis="0 -1 0" damping="5" range="0 1.571"/>
                       <geom name="pp1" type="capsule" fromto="0 0 0 0.075 0 0" size="0.0125" mass=".1"/>
                       <geom name="pp1_pad" type="box" pos="0.037 0 0.013" size="0.0375 0.0125 0.001"
-                            margin="0.003" solref="0.0005 1.6" solimp="0.99 0.999 0.0003 0.5 2"
-                            friction="1.2 0.01 0.0005" rgba="0.2 0.2 0.2 0.8" mass="0.005"/>
+                            margin="0.003" solref="0.01 1" solimp="0.9 0.95 0.001 0.5 2"
+                            friction="1.2 0.05 0.001" rgba="0.2 0.2 0.2 0.8" mass="0.005"/>
                         <body name="finger1_mp" pos="0.075 0 0">
                           <joint name="pipj1" type="hinge" axis="0 -1 0" damping="5" range="0 1.571"/>
                           <geom name="mp1" type="capsule" fromto="0 0 0 0.050 0 0" size="0.0125" mass=".1"/>
                           <geom name="mp1_pad" type="box" pos="0.025 0 0.013" size="0.025 0.0125 0.001" 
-                              margin="0.003" solref="0.0005 1.6" solimp="0.99 0.999 0.0003 0.5 2"
-                              friction="1.2 0.01 0.0005" rgba="0.2 0.2 0.2 0.8" mass="0.005"/>
+                              margin="0.003" solref="0.01 1" solimp="0.9 0.95 0.001 0.5 2"
+                              friction="1.2 0.05 0.001" rgba="0.2 0.2 0.2 0.8" mass="0.005"/>
                         </body>
                     </body>
 
                     <!--  Finger 2  -->
-                    <body name="finger2_pp" pos="-0.025 0.043301 0">
-                      <joint name="mpj2" type="hinge" axis="0.043301 0.025 0" damping="5" range="0 1.571"/>
-                      <geom name="pp2" type="capsule" fromto="0 0 0 -0.037 0.064952 0" size="0.0125" mass=".1"/>
-                      <geom name="pp2_pad" type="box" pos="-0.019 0.032476 0.013" size="0.0375 0.0125 0.001" quat="0.4999 0 0 0.8661"
-                            margin="0.003" solref="0.0005 1.6" solimp="0.99 0.999 0.0003 0.5 2"
-                            friction="1.2 0.01 0.0005" rgba="0.2 0.2 0.2 0.8" mass="0.005"/>
-                        <body name="finger2_mp" pos="-0.037 0.064952 0">
-                          <joint name="pipj2" type="hinge" axis="0.043301 0.025 0" damping="5" range="0 1.571"/>
-                          <geom name="mp2" type="capsule" fromto="0 0 0 -0.025 0.043301 0" size="0.0125" mass=".1"/>
-                          <geom name="mp2_pad" type="box" pos="-0.012 0.021651 0.013" size="0.025 0.0125 0.001" quat="0.4999 0 0 0.8661"
-                              margin="0.003" solref="0.0005 1.6" solimp="0.99 0.999 0.0003 0.5 2"
-                              friction="1.2 0.01 0.0005" rgba="0.2 0.2 0.2 0.8" mass="0.005"/>
+                    <body name="finger2_pp" pos="-0.025 0.043301 0" quat="0.5 0 0 0.8660">
+                      <joint name="mpj2" type="hinge" axis="0 -1 0" damping="5" range="0 1.571"/>
+                      <geom name="pp2" type="capsule" fromto="0 0 0 0.075 0 0" size="0.0125" mass=".1"/>
+                      <geom name="pp2_pad" type="box" pos="0.037 0 0.013" size="0.0375 0.0125 0.001"
+                            margin="0.003" solref="0.01 1" solimp="0.9 0.95 0.001 0.5 2"
+                            friction="1.2 0.05 0.001" rgba="0.2 0.2 0.2 0.8" mass="0.005"/>
+                        <body name="finger2_mp" pos="0.075 0 0">
+                          <joint name="pipj2" type="hinge" axis="0 -1 0" damping="5" range="0 1.571"/>
+                          <geom name="mp2" type="capsule" fromto="0 0 0 0.050 0 0" size="0.0125" mass=".1"/>
+                          <geom name="mp2_pad" type="box" pos="0.025 0 0.013" size="0.025 0.0125 0.001" 
+                              margin="0.003" solref="0.01 1" solimp="0.9 0.95 0.001 0.5 2"
+                              friction="1.2 0.05 0.001" rgba="0.2 0.2 0.2 0.8" mass="0.005"/>
                         </body>
                     </body>
 
-                    <!-- Finger 3 -->
-                    <body name="finger3_pp" pos="-0.025 -0.043301 0">
-                      <joint name="mpj3" type="hinge" axis="-0.043301 0.025 0" damping="5" range="0 1.571"/>
-                      <geom name="pp3" type="capsule" fromto="0 0 0 -0.038 -0.064952 0" size="0.0125" mass=".1"/>
-                      <geom name="pp3_pad" type="box" pos="-0.019 -0.032476 0.013" size="0.0375 0.0125 0.001" quat="-0.4999 0 0 0.8661"
-                            margin="0.003" solref="0.0005 1.6" solimp="0.99 0.999 0.0003 0.5 2"
-                            friction="1.2 0.01 0.0005" rgba="0.2 0.2 0.2 0.8" mass="0.005" />
-                        <body name="finger3_mp" pos="-0.038 -0.064952 0">
-                          <joint name="pipj3" type="hinge" axis="-0.043301 0.025 0" damping="5" range="0 1.571"/>
-                          <geom name="mp3" type="capsule" fromto="0 0 0 -0.025 -0.043301 0" size="0.0125" mass=".1"/>
-                          <geom name="mp3_pad" type="box" pos="-0.013 -0.021651 0.013" size="0.025 0.0125 0.001" quat="-0.4999 0 0 0.8661"
-                              margin="0.003" solref="0.0005 1.6" solimp="0.99 0.999 0.0003 0.5 2"
-                              friction="1.2 0.01 0.0005" rgba="0.2 0.2 0.2 0.8" mass="0.005"/>
+                    <!--  Finger 3  -->
+                    <body name="finger3_pp" pos="-0.025 -0.043301 0" quat="-0.5 0 0 0.8660">
+                      <joint name="mpj3" type="hinge" axis="0 -1 0" damping="5" range="0 1.571"/>
+                      <geom name="pp3" type="capsule" fromto="0 0 0 0.075 0 0" size="0.0125" mass=".1"/>
+                      <geom name="pp3_pad" type="box" pos="0.037 0 0.013" size="0.0375 0.0125 0.001"
+                            margin="0.003" solref="0.01 1" solimp="0.9 0.95 0.001 0.5 2"
+                            friction="1.2 0.05 0.001" rgba="0.2 0.2 0.2 0.8" mass="0.005"/>
+                        <body name="finger3_mp" pos="0.075 0 0">
+                          <joint name="pipj3" type="hinge" axis="0 -1 0" damping="5" range="0 1.571"/>
+                          <geom name="mp3" type="capsule" fromto="0 0 0 0.050 0 0" size="0.0125" mass=".1"/>
+                          <geom name="mp3_pad" type="box" pos="0.025 0 0.013" size="0.025 0.0125 0.001" 
+                              margin="0.003" solref="0.01 1" solimp="0.9 0.95 0.001 0.5 2"
+                              friction="1.2 0.05 0.001" rgba="0.2 0.2 0.2 0.8" mass="0.005"/>
                         </body>
                     </body>
 
@@ -203,12 +205,20 @@
     </body>
 
     <!-- Objects for grasping -->
-    <body name="apple" pos="-0.2 0 2.5">
+    <body name="apple" pos="-0.1 0.1 2.5">
       <freejoint/>
       <geom name="apple_g" type="mesh" mesh="apple_mesh" mass="0.2"
-            solref=".002 1" solimp="0.9 0.95 0.001 0.5 2" friction="1.0 0.01 0.001"/>
-      
+            solref=".002 1" solimp="0.9 0.99 0.001 0.5 2" friction="4 0.5 0.05"/>
     </body>
+
+    <!-- IK code to control the joints to get the end effector to a certain position -->
+    <!--  -->
+
+    <!--<body name="cylinder" pos="0 0 2.5">
+      <freejoint/>
+      <geom name="cyl_g" type="cylinder" size="0.025 0.15" mass="0.2" quat="0 0.71 0 0.71" pos="0 0 .025"
+            solref=".002 1" solimp="0.9 0.99 0.001 0.5 2" friction="2 0.5 0.5"/>
+    </body>-->
 
   </worldbody>
 
@@ -229,6 +239,13 @@
     <position name="mpj3_motor" joint="mpj3" kp="200" ctrlrange="0 1.571"/>
     <!-- <position name="abd_add_motor" joint="abd_add" kp="100" ctrlrange="-1.2 1.2"/> -->
     <position name="pipj3_motor" joint="pipj3" kp="100" ctrlrange="0 1.571"/>
+    <!-- <general class="finger_mp_motor" name="mpj1_motor" joint="mpj1"/>
+    <general class="finger_pip_motor" name="pipj1_motor" joint="pipj1"/>
+    <general class="finger_mp_motor" name="mpj2_motor" joint="mpj2"/>
+    <general class="finger_pip_motor" name="pipj2_motor" joint="pipj2"/>
+    <general class="finger_mp_motor" name="mpj3_motor" joint="mpj3"/>
+     <position name="abd_add_motor" joint="abd_add" kp="100" ctrlrange="-1.2 1.2"/>
+    <general class="finger_pip_motor" name="pipj3_motor" joint="pipj3"/> -->
   </actuator>
 
   <keyframe>
