@@ -1,3 +1,3 @@
-# Visual Content
+# Archive Folder
 
-Photos, videos, and presentations documenting the project.
+Contains early stage photos, videos, and presentations documenting the beginnings of the project.
