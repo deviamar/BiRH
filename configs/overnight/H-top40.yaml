@@ -1,0 +1,53 @@
+# Phase H -- top 40 hands from E on every object and task.
+extends: ../base.yaml
+experiment: overnight-H-top40
+sweep:
+  morphologies:
+  - birh_v1
+  - two_finger
+  - runs/overnight/hands/89e264bcc377604d.json
+  - runs/overnight/hands/f7f8003ebc8e5e37.json
+  - runs/overnight/hands/a498b20955235791.json
+  - runs/overnight/hands/ccf1c0e18e50cd45.json
+  - runs/overnight/hands/73388b6c30c50f43.json
+  - runs/overnight/hands/6b3135c89f225916.json
+  - runs/overnight/hands/fbf34e7e8a726222.json
+  - runs/overnight/hands/95d80939e583842f.json
+  - runs/overnight/hands/a5c2cbae08d24acc.json
+  - runs/overnight/hands/e08aa85c42135b90.json
+  - runs/overnight/hands/e52989e32abcab84.json
+  - runs/overnight/hands/ce04c9a722e1a26e.json
+  - runs/overnight/hands/17c57816a1cd1e6c.json
+  - runs/overnight/hands/0fbf46d0e76eafd4.json
+  - runs/overnight/hands/6c733ff15ed8c19a.json
+  - runs/overnight/hands/9e2b01c4a8764e32.json
+  - runs/overnight/hands/42121b8eb05ecd0b.json
+  - runs/overnight/hands/3363b06e838c73e6.json
+  - runs/overnight/hands/be7a47e7cc292ba6.json
+  - runs/overnight/hands/655b6e671207c5c6.json
+  - runs/overnight/hands/b18c1c4f4bd4d238.json
+  - runs/overnight/hands/08486e85024968c9.json
+  - runs/overnight/hands/c85cfc50ac994d30.json
+  - runs/overnight/hands/75e5809ae85695d8.json
+  - runs/overnight/hands/5a6ced5b82f73b0e.json
+  - runs/overnight/hands/27cac18970437c55.json
+  - runs/overnight/hands/e31832d4429a3e1e.json
+  - runs/overnight/hands/11784b346e9f5137.json
+  - runs/overnight/hands/80dc9bc3e980db7a.json
+  - runs/overnight/hands/cc8bc3b8d9421494.json
+  - runs/overnight/hands/5df67af5a5b7988f.json
+  - runs/overnight/hands/fbef577be125d995.json
+  - runs/overnight/hands/63648f10187e58cc.json
+  - runs/overnight/hands/1953f8e5256a5bea.json
+  - runs/overnight/hands/7404733aeff45028.json
+  - runs/overnight/hands/f584bc176b48b758.json
+  - runs/overnight/hands/3ced9544f5dfde23.json
+  - runs/overnight/hands/186d91f780c57e28.json
+  - runs/overnight/hands/ac928b93f3fa9616.json
+  - runs/overnight/hands/45ea942b3ca0535e.json
+  objects:
+  - all
+  tasks:
+  - all
+  trials: 5
+  include_sim_metrics: false

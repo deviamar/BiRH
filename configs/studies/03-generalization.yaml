@@ -1,0 +1,20 @@
+# Study 4 -- generalization and robustness (docs/00-REVIEW.md 7).
+#
+# Held-out objects plus domain randomization. Reporting worst-category performance beside
+# the mean is the point: optimizing the mean and optimizing the worst case select
+# different hands, and which one you report is a scientific choice.
+extends: ../base.yaml
+experiment: 03-generalization
+
+sweep:
+  morphologies: [birh_v1, four_finger, two_finger]
+  objects: [test]
+  tasks: [lift_randomized, hold_disturbance]
+  trials: 30
+  include_sim_metrics: true
+
+domain_randomization:
+  friction_scale: 0.20
+  mass_scale: 0.15
+  solref_scale: 0.20
+  actuator_gain_scale: 0.10

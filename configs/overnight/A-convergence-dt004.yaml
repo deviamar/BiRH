@@ -1,0 +1,12 @@
+# Phase A -- timestep convergence check (docs/02-MATH.md 11). Same sweep at three
+# timesteps; a metric that moves with the timestep is a numerical artifact, not a metric.
+extends: ../base.yaml
+experiment: overnight-A-convergence-dt004
+sim:
+  timestep: 0.004
+sweep:
+  morphologies: [birh_v1, birh_v1_direct, two_finger]
+  objects: [core15]
+  tasks: [lift, hold_disturbance]
+  trials: 10
+  include_sim_metrics: true

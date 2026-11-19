@@ -1,0 +1,22 @@
+# Study 2 -- factorial ablation of morphological features (docs/00-REVIEW.md 7).
+#
+# Breaks the confounds of the original v1-vs-v2 comparison, which changed finger count,
+# placement, symmetry and opposition simultaneously. Each preset here differs from its
+# partner in exactly one feature, and the analysis pairs on (object, task, trial).
+extends: ../base.yaml
+experiment: 02-ablation
+
+sweep:
+  morphologies:
+    - birh_v1               # 3 symmetric, tendon-coupled, 3 phalanges
+    - birh_v1_direct        #   ... vs per-joint actuation      -> value of underactuation
+    - birh_v1_2ph           #   ... vs 2 phalanges              -> value of the third phalanx
+    - birh_v2               # 2 fingers + thumb with abduction
+    - birh_v2_no_abduction  #   ... vs no abduction             -> value of thumb abduction
+    - two_finger            # minimal baseline
+    - four_finger           #   ... vs 4 digits                 -> marginal return per digit
+    - synergy_three         # one actuator                      -> floor of the complexity axis
+  objects: [core15]
+  tasks: [lift, hold_disturbance, reorient]
+  trials: 20
+  include_sim_metrics: false

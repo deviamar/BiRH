@@ -1,0 +1,11 @@
+# Phase D -- broad survey: every preset x every object x every task x three closure
+# controllers. Coverage, not power: 5 trials per cell.
+extends: ../base.yaml
+experiment: overnight-D-survey
+sweep:
+  morphologies: [all]
+  objects: [all]
+  tasks: [all]
+  controllers: [ramp, gentle, firm]
+  trials: 5
+  include_sim_metrics: false

@@ -1,0 +1,14 @@
+# Phase G -- every preset under domain randomization with the disturbance battery.
+extends: ../base.yaml
+experiment: overnight-G-randomized
+sweep:
+  morphologies: [all]
+  objects: [core15]
+  tasks: [lift_randomized, hold_disturbance]
+  trials: 20
+  include_sim_metrics: true
+domain_randomization:
+  friction_scale: 0.20
+  mass_scale: 0.15
+  solref_scale: 0.20
+  actuator_gain_scale: 0.10

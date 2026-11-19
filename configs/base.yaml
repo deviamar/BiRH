@@ -1,0 +1,24 @@
+# Platform defaults. Study configs `extends: ../base.yaml` and override what they change.
+experiment: default
+
+sim:
+  timestep: 0.002          # validated by the Study 1 convergence check
+  integrator: implicitfast # stable at ~10x the timestep RK4 needs for contact-rich models
+  cone: elliptic           # the true Coulomb cone; the pyramidal default over-states friction
+  solver: Newton
+  iterations: 100
+  impratio: 5.0
+  support: plane
+
+sweep:
+  morphologies: [birh_v1]
+  objects: [core15]
+  tasks: [lift]
+  controllers: [ramp]
+  trials: 1
+  include_sim_metrics: false   # the disturbance battery costs several times a rollout
+  respect_object_filter: true
+  save_traces: false
+
+metrics:
+  cone_edges: 8            # epsilon values are not comparable across different edge counts

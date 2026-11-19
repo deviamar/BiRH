@@ -1,0 +1,14 @@
+# Study 1 -- baseline characterization and instrument validation (docs/00-REVIEW.md 7).
+#
+# Before any claim is made with this simulator, establish that it produces stable,
+# reproducible, well-calibrated outcomes. This is the step whose absence most limits the
+# original project.
+extends: ../base.yaml
+experiment: 01-calibration
+
+sweep:
+  morphologies: [birh_v1, birh_v1_direct, two_finger]
+  objects: [core15]
+  tasks: [lift, hold_disturbance]
+  trials: 30                 # enough for a Wilson interval of useful width
+  include_sim_metrics: true  # robustness is part of what is being calibrated
